@@ -9,17 +9,23 @@
 - **БД:** MySQL 8
 - **Запуск:** Docker Compose
 
-## Запуск
+## Запуск (Docker)
+
+Ничего настраивать не нужно — переменные уже прописаны в `docker-compose.yml`.  
+`npm install` на хосте **не требуется** — зависимости ставятся при сборке образов.
 
 ```bash
-docker compose up --build
+docker compose up --build -d
 ```
 
 - UI: http://localhost:8080
 - API: http://localhost:3000
 - Swagger: http://localhost:3000/api/docs
 
-## Локально
+## Локальная разработка
+
+Нужен только если запускаете backend/frontend **без Docker**.  
+`npm install` — в **обоих** каталогах (`backend` и `frontend`).
 
 MySQL:
 
@@ -48,20 +54,23 @@ Dev-сервер фронта: http://localhost:5173, запросы к API пр
 
 ## Тесты
 
+Только backend. На свежем клоне сначала `npm install`:
+
 ```bash
 cd backend
+npm install
 npm run test:all
 ```
 
 ## API
 
-| Метод | Путь |
-|-------|------|
-| GET | `/work-types` |
-| GET | `/journal-entries?dateFrom=&dateTo=&sort=` |
-| POST | `/journal-entries` |
-| PATCH | `/journal-entries/:id` |
-| DELETE | `/journal-entries/:id` |
+| Метод  | Путь                                                |
+| ------ | --------------------------------------------------- |
+| GET    | `/work-types`                                       |
+| GET    | `/journal-entries?dateFrom=&dateTo=&sort=asc\|desc` |
+| POST   | `/journal-entries`                                  |
+| PATCH  | `/journal-entries/:id`                              |
+| DELETE | `/journal-entries/:id`                              |
 
 Пример:
 
@@ -73,7 +82,9 @@ curl -X POST http://localhost:3000/journal-entries \
 
 ## Переменные окружения
 
-См. `.env.example`. Основные: `DB_HOST`, `DB_PORT`, `DB_USER`, `DB_PASSWORD`, `DB_NAME`, `PORT`.
+Для Docker настройка не требуется.
+
+Для локального backend скопируйте `backend/.env.example` → `backend/.env`. Основные: `DB_HOST`, `DB_PORT`, `DB_USER`, `DB_PASSWORD`, `DB_NAME`, `PORT`.
 
 Для локальной разработки TypeORM включён с `DB_SYNCHRONIZE=true`. На проде лучше миграции и `DB_SYNCHRONIZE=false`.
 
